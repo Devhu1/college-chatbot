@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Manage FAQs</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    h2 { margin-top: 30px; }
+    input, textarea { width: 100%; padding: 6px; margin-bottom: 10px; }
+    button { padding: 8px 16px; }
+  </style>
+</head>
+<body>
+
+  <h1>Admin Panel - Manage FAQs</h1>
+
+  <h2>Current FAQs</h2>
+  <table>
+    <tr><th>Question</th><th>Answer</th></tr>
+    {% for faq in faqs %}
+    <tr>
+      <td>{{ faq.question }}</td>
+      <td>{{ faq.answer }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Add New FAQ</h2>
+  <form action="/add_faq" method="POST">
+    <label for="question">Question:</label><br>
+    <input type="text" id="question" name="question" required><br>
+    <label for="answer">Answer:</label><br>
+    <textarea id="answer" name="answer" rows="4" required></textarea><br>
+    <button type="submit">Add FAQ</button>
+  </form>
+
+</body>
+</html>

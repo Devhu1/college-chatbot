@@ -1,0 +1,341 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>College Chatbot</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background: #f0f4f8;-->
+<!--            margin: 0;-->
+<!--            padding: 20px;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 600px;-->
+<!--            margin: auto;-->
+<!--            background: white;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 4px 12px rgba(0,0,0,0.1);-->
+<!--        }-->
+<!--        h1 {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--        }-->
+<!--        .chat-box {-->
+<!--            border: 1px solid #ddd;-->
+<!--            padding: 10px;-->
+<!--            max-height: 400px;-->
+<!--            overflow-y: auto;-->
+<!--            margin-bottom: 20px;-->
+<!--            background: #fafafa;-->
+<!--        }-->
+<!--        .message {-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+<!--        .user {-->
+<!--            font-weight: bold;-->
+<!--            color: #007bff;-->
+<!--        }-->
+<!--        .bot {-->
+<!--            font-weight: bold;-->
+<!--            color: #28a745;-->
+<!--        }-->
+<!--        form {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+<!--        input[type="text"] {-->
+<!--            flex: 1;-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+<!--        input[type="submit"] {-->
+<!--            padding: 10px 20px;-->
+<!--            border: none;-->
+<!--            background-color: #007bff;-->
+<!--            color: white;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        input[type="submit"]:hover {-->
+<!--            background-color: #0056b3;-->
+<!--        }-->
+
+<!--#micButton {-->
+<!--    font-size: 18px;-->
+<!--    padding: 6px 10px;-->
+<!--    border-radius: 50%;-->
+<!--    border: none;-->
+<!--    cursor: pointer;-->
+<!--    transition: box-shadow 0.3s;-->
+<!--}-->
+
+<!--#micButton.listening {-->
+<!--    animation: pulse 1s infinite;-->
+<!--    box-shadow: 0 0 12px red;-->
+<!--}-->
+
+<!--@keyframes pulse {-->
+<!--    0% { box-shadow: 0 0 5px red; }-->
+<!--    50% { box-shadow: 0 0 20px red; }-->
+<!--    100% { box-shadow: 0 0 5px red; }-->
+<!--}-->
+
+<!--    </style>-->
+<!--</head>-->
+
+<!--<script>-->
+<!--function startListening() {-->
+<!--    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();-->
+<!--    recognition.lang = 'en-IN';-->
+
+<!--    const micButton = document.getElementById("micButton");-->
+<!--    micButton.classList.add("listening");-->
+
+<!--    recognition.onstart = () => console.log("Voice recognition started.");-->
+<!--    recognition.onresult = (event) => {-->
+<!--        const transcript = event.results[0][0].transcript;-->
+<!--        document.getElementById("queryInput").value = transcript;-->
+<!--        micButton.classList.remove("listening");-->
+<!--    };-->
+<!--    recognition.onerror = (event) => {-->
+<!--        console.error("Speech recognition error:", event.error);-->
+<!--        alert("Voice input failed: " + event.error);-->
+<!--        micButton.classList.remove("listening");-->
+<!--    };-->
+<!--    recognition.onend = () => micButton.classList.remove("listening");-->
+<!--    recognition.start();-->
+<!--}-->
+
+<!--document.addEventListener("DOMContentLoaded", function () {-->
+<!--    const chatForm = document.getElementById("chatForm");-->
+<!--    const queryInput = document.getElementById("queryInput");-->
+<!--    const chatBox = document.querySelector(".chat-box");-->
+
+<!--    chatForm.addEventListener("submit", function (e) {-->
+<!--        e.preventDefault(); // Stop default form POST-->
+
+<!--        const userText = queryInput.value.trim();-->
+<!--        if (!userText) return;-->
+
+<!--        // Append user message-->
+<!--        chatBox.innerHTML += `<div class="message"><div class="user">You:</div><div>${userText}</div></div>`;-->
+
+<!--        // Send to backend-->
+<!--        fetch("/get", {-->
+<!--            method: "POST",-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json"-->
+<!--            },-->
+<!--            body: JSON.stringify({ msg: userText })-->
+<!--        })-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            chatBox.innerHTML += `<div class="message"><div class="bot">Bot:</div><div>${data}</div></div>`;-->
+<!--            queryInput.value = "";-->
+<!--            chatBox.scrollTop = chatBox.scrollHeight;-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--            chatBox.innerHTML += `<div class="message"><div class="bot">Bot:</div><div>Error: ${error}</div></div>`;-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
+
+
+
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h1>College Chatbot</h1>-->
+<!--    <div class="chat-box">-->
+<!--        {% for entry in chat_history %}-->
+<!--            <div class="message">-->
+<!--                <div class="user">You:</div>-->
+<!--                <div>{{ entry.question }}</div>-->
+<!--                <div class="bot">Bot:</div>-->
+<!--                <div>{{ entry.answer }}</div>-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+
+<!--    <form id="chatForm">-->
+<!--    <input type="text" name="query" id="queryInput" placeholder="Ask your question here..." required>-->
+<!--    <input type="submit" value="Ask">-->
+<!--    <button type="button" id="micButton" onclick="startListening()">🎤</button>-->
+<!--</form>-->
+
+<!--    <form method="POST">-->
+<!--        <input type="hidden" name="clear" value="true">-->
+<!--        <input type="submit" value="Clear Chat">-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .user {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .bot {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #micButton {
+            font-size: 18px;
+            padding: 8px 10px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+
+        #micButton.listening {
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 12px red;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px red; }
+            50% { box-shadow: 0 0 20px red; }
+            100% { box-shadow: 0 0 5px red; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>College Chatbot</h1>
+
+    <div class="chat-box" id="chat-box">
+        <!-- Chat messages will be appended here dynamically -->
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="queryInput" placeholder="Ask your question..." required>
+        <button onclick="sendMessage()">Ask</button>
+        <button id="micButton" onclick="startListening()">🎤</button>
+    </div>
+
+    <br>
+    <form method="POST">
+        <input type="hidden" name="clear" value="true">
+        <button type="submit">Clear Chat</button>
+    </form>
+</div>
+
+<script>
+function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-IN';
+
+    const micButton = document.getElementById("micButton");
+    micButton.classList.add("listening");
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("queryInput").value = transcript;
+        micButton.classList.remove("listening");
+        sendMessage(); // Auto-send after voice input
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        alert("Voice input error: " + event.error);
+        micButton.classList.remove("listening");
+    };
+
+    recognition.onend = () => {
+        micButton.classList.remove("listening");
+    };
+
+    recognition.start();
+}
+
+function sendMessage() {
+    const userText = document.getElementById("queryInput").value.trim();
+    if (!userText) return;
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += `<div class="message"><span class="user">You:</span> ${userText}</div>`;
+
+    fetch("/get", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ msg: userText })
+    })
+    .then(response => response.text())
+    .then(botReply => {
+        chatBox.innerHTML += `<div class="message"><span class="bot">Bot:</span> ${botReply}</div>`;
+        document.getElementById("queryInput").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        chatBox.innerHTML += `<div class="message bot">Sorry, something went wrong.</div>`;
+    });
+}
+</script>
+</body>
+</html>
